@@ -1,0 +1,81 @@
+export const hotspots = [
+  {
+    id: "downtown-gridlock",
+    label: "Downtown gridlock",
+    type: "traffic",
+    x: 52,
+    y: 54,
+    radius: 16,
+    intensity: 0.95,
+    detail: "Speeds are well below the usual evening baseline.",
+  },
+  {
+    id: "stadium-letting-out",
+    label: "Stadium letting out",
+    type: "event",
+    x: 72,
+    y: 34,
+    radius: 12,
+    intensity: 0.72,
+    detail: "Crowds are spilling into nearby arterials.",
+  },
+  {
+    id: "midtown-closure",
+    label: "Midtown lane closure",
+    type: "closure",
+    x: 42,
+    y: 42,
+    radius: 9,
+    intensity: 0.55,
+    detail: "A short closure is creating spillover on cross streets.",
+  },
+  {
+    id: "southside-commotion",
+    label: "Southside commotion",
+    type: "safety",
+    x: 35,
+    y: 76,
+    radius: 13,
+    intensity: 0.62,
+    detail: "Clustered incident reports make this area less predictable.",
+  },
+];
+
+export const routes = [
+  {
+    id: "north",
+    name: "North side",
+    label: "Calmer north route",
+    color: "#168c7f",
+    points: [
+      { x: 12, y: 36 },
+      { x: 34, y: 28 },
+      { x: 58, y: 26 },
+      { x: 86, y: 32 },
+    ],
+  },
+  {
+    id: "downtown",
+    name: "Downtown corridor",
+    label: "Direct but hot",
+    color: "#d84f2a",
+    points: [
+      { x: 12, y: 62 },
+      { x: 34, y: 58 },
+      { x: 54, y: 54 },
+      { x: 86, y: 58 },
+    ],
+  },
+  {
+    id: "south",
+    name: "South belt",
+    label: "Longer and uneven",
+    color: "#5967c9",
+    points: [
+      { x: 12, y: 78 },
+      { x: 33, y: 76 },
+      { x: 58, y: 72 },
+      { x: 86, y: 66 },
+    ],
+  },
+];

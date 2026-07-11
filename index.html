@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SIA — see the city</title>
+    <link rel="stylesheet" href="./vendor/maplibre-gl.css" />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="map-stage" aria-label="Live city intuition map">
+        <div class="top-bar">
+          <div>
+            <p class="eyebrow">SIA</p>
+            <h1>Ambient route intelligence <a class="map-switch" href="./plane.html">plane view ▸</a></h1>
+          </div>
+          <div id="statusPill" class="status-pill" role="status">
+            <span id="statusDot" class="live-dot connecting" aria-hidden="true"></span>
+            <span id="statusText">Connecting to Seattle feeds…</span>
+          </div>
+        </div>
+
+        <div class="map-wrap">
+          <div id="realMap" class="real-map" role="application" aria-label="Seattle live map"></div>
+          <div id="mapHint" class="map-hint hidden">Click the map to place an avoid zone</div>
+          <div id="companion" class="companion" role="dialog" aria-label="Companion">
+            <div class="companion-head">
+              <p id="companionPrompt" class="companion-prompt">Where are we going?</p>
+              <button id="companionDismiss" class="companion-dismiss" type="button" aria-label="Dismiss">✕</button>
+            </div>
+            <div id="companionChips" class="companion-chips"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="control-panel" aria-label="Prototype controls">
+        <section class="panel-section guidance-section">
+          <div class="section-heading inline">
+            <div>
+              <p class="eyebrow">Route read</p>
+              <h2 id="guidanceTitle">Reading the city…</h2>
+            </div>
+            <button id="companionReopen" class="text-button hidden" type="button">Where to?</button>
+          </div>
+          <p id="guidanceSummary" class="guidance-copy"></p>
+          <div id="routeCards" class="route-cards"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-heading inline">
+            <div>
+              <p class="eyebrow">Personal layer</p>
+              <h2>Avoid zones</h2>
+            </div>
+            <button id="addAvoidButton" class="icon-button" type="button" aria-pressed="false" title="Add avoid zone">+</button>
+          </div>
+          <label class="field-label" for="avoidLabel">Zone label</label>
+          <input id="avoidLabel" class="text-input" value="Personal avoid" />
+          <div id="avoidList" class="avoid-list"></div>
+          <button id="clearAvoidButton" class="text-button" type="button">Clear avoid zones</button>
+        </section>
+
+        <section class="panel-section">
+          <p class="eyebrow">Layers</p>
+          <label class="toggle-row">
+            <input id="trafficToggle" type="checkbox" checked />
+            <span>Traffic and slow corridors</span>
+          </label>
+          <label class="toggle-row">
+            <input id="eventsToggle" type="checkbox" checked />
+            <span>Events and crowding</span>
+          </label>
+          <label class="toggle-row">
+            <input id="safetyToggle" type="checkbox" checked />
+            <span>Safety and commotion</span>
+          </label>
+          <button id="refreshButton" class="primary-button" type="button">Refresh signals</button>
+        </section>
+
+        <section class="panel-section">
+          <details id="signalDetails" class="signal-details">
+            <summary>
+              <span class="eyebrow">Signals on the map</span>
+              <span id="signalListCount" class="signal-count"></span>
+            </summary>
+            <ul id="signalList" class="signal-list" aria-label="Live signals, hottest first"></ul>
+          </details>
+        </section>
+
+        <section class="panel-section source-section">
+          <p class="eyebrow">Sources</p>
+          <ul id="sourceList"></ul>
+        </section>
+      </aside>
+    </main>
+
+    <script src="./demo-config.js"></script>
+    <script src="./vendor/maplibre-gl.js"></script>
+    <script type="module" src="./src/mapApp.js"></script>
+  </body>
+</html>
