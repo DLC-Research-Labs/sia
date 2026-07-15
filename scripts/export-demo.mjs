@@ -16,7 +16,7 @@ cpSync("src", join(target, "src"), { recursive: true });
 cpSync("vendor", join(target, "vendor"), { recursive: true });
 cpSync("demo-config.js", join(target, "demo-config.js"));
 
-for (const page of ["index.html", "plane.html"]) {
+for (const page of ["index.html", "plane.html", "immersive.html"]) {
   writeFileSync(join(target, page), transform(readFileSync(page, "utf8")));
 }
 
@@ -36,6 +36,7 @@ function transform(html) {
     .replaceAll("./vendor/", `${basePath}/vendor/`)
     .replaceAll("./demo-config.js", `${basePath}/demo-config.js`)
     .replaceAll('href="./plane.html"', `href="${basePath}/plane.html"`)
+    .replaceAll('href="./immersive.html"', `href="${basePath}/immersive.html"`)
     .replaceAll('href="./index.html"', `href="${basePath}"`);
 
   // Optional: bake free client-side keys into the public demo (both are
