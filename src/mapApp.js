@@ -9,6 +9,7 @@ import { CORRIDORS, corridorsForScoring } from "./corridors.js";
 import { KIND_TO_RENDER_TYPE, planeAspect, projectToPlane } from "./signals/contract.js";
 import { signalListEntries, visibleTypesFromToggles } from "./layers.js";
 import { createLiveSignalStore } from "./signals/liveSignals.js";
+import { deriveCommotion } from "./signals/deriveCommotion.js";
 import { describeLiveStatus } from "./statusPill.js";
 import { SEATTLE_VIEWPORT, seaFire911Adapter } from "./signals/seaFire911Adapter.js";
 import { createWsdotTrafficAdapter } from "./signals/wsdotTrafficAdapter.js";
@@ -160,6 +161,7 @@ map.on("load", () => {
 
 const liveStore = createLiveSignalStore({
   adapters,
+  derivers: [deriveCommotion],
   viewport: SEATTLE_VIEWPORT,
   onUpdate: ({ status, hotspots, signals, signalCount, adapterStates }) => {
     state.liveStatus = status;

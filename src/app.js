@@ -3,6 +3,7 @@ import { KIND_TO_RENDER_TYPE } from "./signals/contract.js";
 import { visibleTypesFromToggles } from "./layers.js";
 import { hotspots as baseHotspots, routes } from "./mockData.js";
 import { createLiveSignalStore } from "./signals/liveSignals.js";
+import { deriveCommotion } from "./signals/deriveCommotion.js";
 import { describeLiveStatus } from "./statusPill.js";
 import { SEATTLE_VIEWPORT, seaFire911Adapter } from "./signals/seaFire911Adapter.js";
 import { createWsdotTrafficAdapter } from "./signals/wsdotTrafficAdapter.js";
@@ -75,6 +76,7 @@ if (tmApiKey) {
 
 const liveStore = createLiveSignalStore({
   adapters,
+  derivers: [deriveCommotion],
   viewport: SEATTLE_VIEWPORT,
   onUpdate: ({ status, hotspots, signalCount, adapterStates }) => {
     state.liveStatus = status;

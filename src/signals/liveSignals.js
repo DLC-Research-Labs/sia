@@ -9,6 +9,7 @@ import { validateBatch, toHotspot } from "./contract.js";
 /**
  * @param {{
  *   adapters: Array<{ id: string, name?: string, cadence: { intervalSec: number }, pull: Function }>,
+ *   derivers?: Array<(signals: Array, ctx: { now: () => Date }) => Array>,
  *   viewport: { west: number, south: number, east: number, north: number },
  *   onUpdate: (update: {
  *     status: "live"|"degraded"|"error",
@@ -25,7 +26,13 @@ import { validateBatch, toHotspot } from "./contract.js";
  * "live", some live → "degraded", none live → "error". One failing feed
  * should not paint the whole pill red while another is still reporting.
  */
-export function createLiveSignalStore({ adapters, viewport, onUpdate, now = () => new Date() }) {
+export function createLiveSignalStore({
+  adapters,
+  derivers = [],
+  viewport,
+  onUpdate,
+  now = () => new Date(),
+}) {
   const snapshots = new Map(); // adapter.id → CitySignal[]
   const health = new Map(); // adapter.id → { status: "live"|"error", error: string|null }
   const timers = [];
@@ -44,6 +51,27 @@ export function createLiveSignalStore({ adapters, viewport, onUpdate, now = () =
         liveSignals.push(signal);
         const hotspot = toHotspot(signal, viewport);
         if (hotspot) hotspots.push(hotspot);
+      }
+    }
+
+    // Derivers (e.g. commotion burst-detection) run over the adapter signals
+    // only — derived output never feeds another deriver. They re-run on every
+    // state read, so a burst dissolves as its members age out of the window.
+    const adapterSignals = [...liveSignals];
+    for (const derive of derivers) {
+      try {
+        const { valid, rejected } = validateBatch(derive(adapterSignals, { now }));
+        if (rejected.length > 0) {
+          ctx.log(`deriver rejected ${rejected.length} invalid signals`);
+        }
+        for (const signal of valid) {
+          liveSignals.push(signal);
+          const hotspot = toHotspot(signal, viewport);
+          if (hotspot) hotspots.push(hotspot);
+        }
+      } catch (error) {
+        // A broken deriver must not take down live ingestion.
+        ctx.log(`deriver failed — ${error.message}`);
       }
     }
 
